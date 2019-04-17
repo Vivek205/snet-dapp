@@ -621,6 +621,11 @@ export  class Jobdetails extends React.Component {
                                     </div>
                                     <div className="job-details-url">
                                       <a target="_blank" href={this.serviceState["url"]}>{this.serviceState["url"]}</a>
+                                      
+                                    </div>
+                                    <div className='col-xs-12 col-md-12 col-sm-12 org-serv-id no-padding'>
+                                    <div className="col-xs-6 col-md-6 col-sm-6 no-padding job-description">org_id: <strong>{this.serviceState['org_id']}</strong> </div>
+                                    <div className="col-xs-6 col-md-6 col-sm-6 no-padding job-description">service_id: <strong>{this.serviceState['service_id']}</strong></div>
                                     </div>
                                 </div>
 

@@ -1360,8 +1360,8 @@ i {
 .job-details-url {
   font-size: 14px;
   margin: 0;
-  padding: 15px 0;
-  border-bottom: 2px solid #dee2e6;
+  /* padding: 15px 0; */
+  /* border-bottom: 2px solid #dee2e6; */
   line-height: 18px;
 }
 
@@ -2156,3 +2156,8 @@ input[type=date]::-webkit-clear-button {
 }
 /* Expiry Date picker ends  */
 
+/* OrgId/Service Id starts */
+.org-serv-id{
+  border-bottom: 2px solid #dee2e6;
+}
+/* OrgId/Service Id ends */
