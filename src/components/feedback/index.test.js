@@ -16,6 +16,7 @@ setup = () => {
 
 describe('Wilkommen auf Pru`fung', () => {
     it('should pass', () => {
-        expect(true).toBe(true);
+        const wrapper = shallow(<MyComponent name="React" />);
+        expect(wrapper.text()).toBe("React");
     })
-})
+});
