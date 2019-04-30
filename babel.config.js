@@ -1,13 +1,13 @@
-module.exports = {
-    env: {
-      test: {
-        presets: [
-          '@babel/preset-env',
-          '@babel/preset-react',
-        ],
-        plugins: [
-            '@babel/plugin-transform-runtime'
-        ]
-      },
-    },
-  };
+module.exports = function (api) {
+    api.cache(true);;
+    return {
+        env: {
+            test: {
+                presets: [
+                    '@babel/preset-env',
+                    '@babel/preset-react',
+                ],
+            },
+        },
+    };
+}

@@ -9,7 +9,7 @@ module.exports = {
     collectCoverageFrom: ['src/**/*.{js,jsx,mjs}'],
   
     // The directory where Jest should output its coverage files
-    coverageDirectory: 'coverage',
+    coverageDirectory: 'src/test/coverage',
   
     // An array of file extensions your modules use
     moduleFileExtensions: ['js', 'json', 'jsx'],
@@ -34,4 +34,9 @@ module.exports = {
     
     // Indicates whether each individual test should be reported during the run
     verbose: false,
+
+    //The moduleNameMapper can be used to map a module path to a different module.
+    moduleNameMapper:{
+      "\\.(css|less)$": "<rootDir>/src/test/__mocks__/styleMock.js"
+    },
   };
