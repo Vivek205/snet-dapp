@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import '../css/style.css';
-import SampleImport from './index2';
+import { Requests } from '../requests';
 
-const basicTest = () => {
-    return(<span>Hallo !</span>)
+class BasicTest extends Component{
+    render(){
+        return(<span>Hallo !</span>);
+    }
 }
 
-export default basicTest;
+export default BasicTest;
