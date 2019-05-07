@@ -9,12 +9,14 @@ import connectwallet from "./components/ConnectWallet.js";
 import GetStarted from "./components/GetStarted.js";
 import Footer from './components/Footer.js';
 import GDPR from './js/gdpr';
+import { initializeFortmatic } from './js/initFortmatic';
 
 require('./css/style.css');
 require('./css/background.css');
 require('./css/profile.css');
 
 GDPR();
+initializeFortmatic();
 
 ReactDOM.render(
   <BrowserRouter>
