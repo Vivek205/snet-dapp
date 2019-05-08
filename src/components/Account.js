@@ -224,15 +224,16 @@ export class Account extends Component {
       gas: estimatedGas,
       gasPrice: gasPrice
     });
-
-    this.onShowModal(MESSAGES.WAIT_FOR_MM);
+    console.log('1st parameters.push');
+    // this.onShowModal(MESSAGES.WAIT_FOR_MM);
     parameters.push((error, txnHash) => {
+      console.log('2nd parametes.push',error,txnHash)
       if(error) {
         this.processError(error, messageField)
       }
       else {
         console.log("Txn Hash for approved transaction is : " + txnHash);
-        this.onShowModal(MESSAGES.WAIT_FOR_TRANSACTION);
+        // this.onShowModal(MESSAGES.WAIT_FOR_TRANSACTION);
         this.network.waitForTransaction(txnHash).then(receipt => {
             if(typeof callBack !== 'undefined') {
                 callBack(caller)
@@ -248,11 +249,13 @@ export class Account extends Component {
           })
       }
     });
-
-    operation.apply(this,parameters);
+    console.log('operation.apply');
+    // operation.apply(this,parameters);
+    operation(this.parameters);
   }
 
   handleAuthorize() {
+    console.log('handle Authorize', web3);
     this.clearMessage("contractMessage");
     if (typeof web3 === 'undefined' || !this.state.supportedNetwork) {
       return;
@@ -272,11 +275,36 @@ export class Account extends Component {
       }
       instanceTokenContract.approve.estimateGas(this.network.getMPEAddress(this.state.chainId),amountInCogs, (err, estimatedGas) => {
         if(err) {
-            estimatedGas = DEFAULT_GAS_ESTIMATE;
+            estimatedGas = DEFAULT_GAS_ESTIMATE;handleDeposithandleDeposhandleDeposithandleDepositit
         }
-        this.executeContractMethod(instanceTokenContract.approve, this.handleDeposit, estimatedGas, gasPrice, "contractMessage",
-        "",
-        [this.network.getMPEAddress(this.state.chainId),amountInCogs]);
+        console.log('estimated gas',estimatedGas);
+        console.log('MPE Address',[this.network.getMPEAddress(this.state.chainId),amountInCogs]);
+        console.log('instanceTokenContract',instanceTokenContract.approve);
+        // instanceTokenContract.approve();
+        let from;
+        let toAddress =  [this.network.getMPEAddress(this.state.chainId),amountInCogs][0];
+        // Calculate contract compatible value for transfer with proper decimal points using BigNumber
+        const tokenDecimals = web3.toBigNumber(18);
+        const tokenAmountToTransfer = web3.toBigNumber(100);
+        const calculatedTransferValue = web3.toHex(tokenAmountToTransfer.mul(web3.toBigNumber(10).pow(tokenDecimals)));
+        console.log('toAdress',toAddress);
+        console.log('calculated value',calculatedTransferValue);
+        console.log('contract Instance hash',instanceTokenContract.transactionHash)
+        instanceTokenContract.totalSupply.call((err,result)=>{
+          console.log('instanceTokenContract.totalSupply.call',result);
+        });
+        web3.eth.getAccounts((err,accounts)=>{
+          console.log('getAccounts',accounts);
+          from = accounts[0];
+          instanceTokenContract.transfer.sendTransaction(toAddress,calculatedTransferValue,{from},(err,txnHash)=>{
+            if(error){console.log('instanceTokenContract.transfer.sendTransaction error',error)};
+            console.log('instanceTokenContract.transfer.sendTransaction success',txnHash);
+          });
+        });
+
+        // this.executeContractMethod(instanceTokenContract.approve, this.handleDeposit, estimatedGas, gasPrice, "contractMessage",
+        // "",
+        // [this.network.getMPEAddress(this.state.chainId),amountInCogs]);
       })
     })
   }

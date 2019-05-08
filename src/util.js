@@ -31,6 +31,7 @@ export class AGI {
   }
 
   static inCogs(web3, value) {
+    console.log('toWei',web3.toWei(value,'ether'));
     return new BigNumber(web3.toWei(value, "ether") / (10 ** (10))).toNumber();
   }  
 }

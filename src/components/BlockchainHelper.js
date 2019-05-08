@@ -6,8 +6,13 @@ import AGITokenAbi from 'singularitynet-token-contracts/abi/SingularityNetToken.
 import MPEAbi from 'singularitynet-platform-contracts/abi/MultiPartyEscrow.json';
 import MPENetworks from 'singularitynet-platform-contracts/networks/MultiPartyEscrow.json';
 import { AGI } from '../util';
-import { NETWORKS } from '../networks'
+import { NETWORKS } from '../networks';
+import Fortmatic from 'fortmatic';
+import Web3 from 'web3';
 
+const API_KEY = 'pk_test_2DDB9F91B7018B59';
+
+const fm = new Fortmatic(API_KEY,'kovan');
 
 export default class BlockchainHelper {
 
@@ -19,19 +24,33 @@ export default class BlockchainHelper {
     }
 
     async initialize() {
-        var web3Initiatized = false;
-        if (typeof window.ethereum !== 'undefined') {
-            try {
-                window.web3 = new Web3(ethereum);
-                await window.ethereum.enable();
-                this.initializeState();
-                web3Initiatized = true;
-            } catch (error) {
-                console.log("User denied access to Metamask");
-            }
-        } else if (typeof window.web3 !== 'undefined') {
+
+
+
+        // var web3Initiatized = false;
+        // if (typeof window.ethereum !== 'undefined') {
+        //     try {
+        //         window.web3 = new Web3(ethereum);
+        //         await window.ethereum.enable();
+        //         this.initializeState();
+        //         web3Initiatized = true;
+        //     } catch (error) {
+        //         console.log("User denied access to Metamask");
+        //     }
+        // } else if (typeof window.web3 !== 'undefined') {
+        //     this.initializeState();
+        //     web3Initiatized = true;
+        // }
+        // return web3Initiatized;
+        let web3Initiatized = false;
+        try{
+            window.web3 = new Web3(fm.getProvider());
+            await web3.currentProvider.enable();
             this.initializeState();
             web3Initiatized = true;
+            console.log('web3 in blockchainhelper',window.web3);
+        }catch(err){
+            console.log('err in initalizing blockChain', err);
         }
         return web3Initiatized;
     }
@@ -47,6 +66,7 @@ export default class BlockchainHelper {
         while (!receipt) {
           receipt = await window.ethjs.getTransactionReceipt(hash);
         }
+        console.log('waitForTransaction = receipt', receipt);
 
         if (receipt.status === "0x0") {
           throw receipt
@@ -149,6 +169,7 @@ export default class BlockchainHelper {
     getRegistryInstance(chainId) {
         if (chainId in RegistryNetworks) {
             contract = web3.eth.contract(RegistryAbi)
+            console.log('web3.eth.contract');
             return contract.at(RegistryNetworks[chainId].address);
         }
     }
