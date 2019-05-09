@@ -482,7 +482,7 @@ export class Jobdetails extends React.Component {
               this.processChannelErrors(error,"Unable to invoke the openChannel method");
             }
             else {
-              console.log("depositAndOpenChannel opened is TXN Has : " + txnHash);
+              console.log("depositAndOpenChannel opened is TXN Hash : " + txnHash);
               // this.onShowModal(MESSAGES.WAIT_FOR_TRANSACTION)
               this.props.network.waitForTransaction(txnHash).then(receipt => {
                   console.log('Opened channel and deposited ' + AGI.toDecimal(this.state.ocvalue) + ' from: ' + this.props.userAddress);
