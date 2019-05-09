@@ -102,6 +102,7 @@ export class Account extends Component {
 
   watchWallet() {
     this.network.getAccount((account) => {
+      console.log('account', account);
       if (account !== this.state.account) {
         console.log("Account changed from " + this.state.account +" to " + account)
         this.setState({account:account})

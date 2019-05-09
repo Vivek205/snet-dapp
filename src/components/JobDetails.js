@@ -375,6 +375,7 @@ export class Jobdetails extends React.Component {
     try {
       this.setState({ depositopenchannelerror: '' });
       let mpeInstance = this.props.network.getMPEInstance(this.props.chainId);
+      console.log('mpe instance',mpeInstance);
       var amountInCogs = AGI.inCogs(web3, this.state.ocvalue);
 
       if (typeof this.channelHelper.getChannels() === 'undefined') {
@@ -473,7 +474,7 @@ export class Jobdetails extends React.Component {
           estimatedGas = DEFAULT_GAS_ESTIMATE
         }
 
-          this.onShowModal(MESSAGES.WAIT_FOR_MM);
+          // this.onShowModal(MESSAGES.WAIT_FOR_MM);
           mpeInstance.openChannel(this.props.userAddress, recipientaddress, groupIDBytes, amountInCogs, this.state.ocexpiration, {
             gas: estimatedGas, gasPrice: gasPrice
           }, (error, txnHash) => {
@@ -482,11 +483,11 @@ export class Jobdetails extends React.Component {
             }
             else {
               console.log("depositAndOpenChannel opened is TXN Has : " + txnHash);
-              this.onShowModal(MESSAGES.WAIT_FOR_TRANSACTION)
+              // this.onShowModal(MESSAGES.WAIT_FOR_TRANSACTION)
               this.props.network.waitForTransaction(txnHash).then(receipt => {
                   console.log('Opened channel and deposited ' + AGI.toDecimal(this.state.ocvalue) + ' from: ' + this.props.userAddress);
                 }).then(() => {
-                  this.onShowModal(MESSAGES.WAIT_FOR_NEW_CHANNEL);
+                  // this.onShowModal(MESSAGES.WAIT_FOR_NEW_CHANNEL);
                   this.getChannelDetails(mpeInstance,startingBlock, recipientaddress);
                 })
                 .catch((error) => {
@@ -513,7 +514,8 @@ export class Jobdetails extends React.Component {
         toBlock: 'latest'
       });
 
-      console.log("Starting to listen")
+      console.log("Starting to listen",evt);
+
       evt.watch((error, result) => {
         if (error) {
           this.processChannelErrors(error,"Reading event for channel open failed with error");
@@ -571,10 +573,11 @@ export class Jobdetails extends React.Component {
         return;
       }
 
-      if(typeof watchBlocknumberTimer === 'undefined') {
-        console.log("Setting the watchblock timer")
-        this.watchBlocknumberTimer = setInterval(() => this.watchBlocknumber(), 500);
-      }
+      // if(typeof watchBlocknumberTimer === 'undefined') {
+      //   console.log("Setting the watchblock timer")
+      //   this.watchBlocknumberTimer = setInterval(() => this.watchBlocknumber(), 500);
+      // }
+      this.watchBlocknumber();
       this.setState({runjobstate: (data["is_available"] === 1)});
         this.props.network.getCurrentBlockNumber((blockNumber) => {
             this.currentBlockNumber = blockNumber
