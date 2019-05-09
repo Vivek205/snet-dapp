@@ -24,24 +24,6 @@ export default class BlockchainHelper {
     }
 
     async initialize() {
-
-
-
-        // var web3Initiatized = false;
-        // if (typeof window.ethereum !== 'undefined') {
-        //     try {
-        //         window.web3 = new Web3(ethereum);
-        //         await window.ethereum.enable();
-        //         this.initializeState();
-        //         web3Initiatized = true;
-        //     } catch (error) {
-        //         console.log("User denied access to Metamask");
-        //     }
-        // } else if (typeof window.web3 !== 'undefined') {
-        //     this.initializeState();
-        //     web3Initiatized = true;
-        // }
-        // return web3Initiatized;
         let web3Initiatized = false;
         try{
             window.web3 = new Web3(fm.getProvider());
@@ -55,7 +37,7 @@ export default class BlockchainHelper {
         return web3Initiatized;
     }
 
-    initializeState() {
+    initializeState(web3) {
         this.web3 = window.web3;
         this.eth = new Eth(window.web3.currentProvider);
         window.ethjs = this.eth; //TODO - NETWORK CHANGE

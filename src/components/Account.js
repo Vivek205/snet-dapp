@@ -62,15 +62,15 @@ export class Account extends Component {
   }
 
   componentWillUnmount() {
-    if (this.watchWalletTimer) {
-      console.log("Clearing wallet timer")
-      clearInterval(this.watchWalletTimer);
-    }
+    // if (this.watchWalletTimer) {
+    //   console.log("Clearing wallet timer")
+    //   clearInterval(this.watchWalletTimer);
+    // }
 
-    if (this.watchNetworkTimer) {
-      console.log("Clearing network timer")
-      clearInterval(this.watchNetworkTimer);
-    }
+    // if (this.watchNetworkTimer) {
+    //   console.log("Clearing network timer")
+    //   clearInterval(this.watchNetworkTimer);
+    // }
   }
 
   handleWindowLoad() {
@@ -79,12 +79,12 @@ export class Account extends Component {
         console.log("Initializing timers")
         this.watchNetwork();
         this.watchWallet();
-        if (!this.watchNetworkTimer) {
-          this.watchNetworkTimer = setInterval(() => this.watchNetwork(), 500);
-        }
-        if (!this.watchWalletTimer) {
-          this.watchWalletTimer = setInterval(() => this.watchWallet(), 500);
-        }
+        // if (!this.watchNetworkTimer) {
+        //   this.watchNetworkTimer = setInterval(() => this.watchNetwork(), 500);
+        // }
+        // if (!this.watchWalletTimer) {
+        //   this.watchWalletTimer = setInterval(() => this.watchWallet(), 500);
+        // }
       }
     }).catch(err => {
       console.error(err);
@@ -224,10 +224,9 @@ export class Account extends Component {
       gas: estimatedGas,
       gasPrice: gasPrice
     });
-    console.log('1st parameters.push');
-    // this.onShowModal(MESSAGES.WAIT_FOR_MM);
+
+    this.onShowModal(MESSAGES.WAIT_FOR_MM);
     parameters.push((error, txnHash) => {
-      console.log('2nd parametes.push',error,txnHash)
       if(error) {
         this.processError(error, messageField)
       }
@@ -249,13 +248,11 @@ export class Account extends Component {
           })
       }
     });
-    console.log('operation.apply');
-    // operation.apply(this,parameters);
-    operation(this.parameters);
+
+    operation.apply(this,parameters);
   }
 
   handleAuthorize() {
-    console.log('handle Authorize', web3);
     this.clearMessage("contractMessage");
     if (typeof web3 === 'undefined' || !this.state.supportedNetwork) {
       return;
@@ -275,36 +272,11 @@ export class Account extends Component {
       }
       instanceTokenContract.approve.estimateGas(this.network.getMPEAddress(this.state.chainId),amountInCogs, (err, estimatedGas) => {
         if(err) {
-            estimatedGas = DEFAULT_GAS_ESTIMATE;handleDeposithandleDeposhandleDeposithandleDepositit
+            estimatedGas = DEFAULT_GAS_ESTIMATE;
         }
-        console.log('estimated gas',estimatedGas);
-        console.log('MPE Address',[this.network.getMPEAddress(this.state.chainId),amountInCogs]);
-        console.log('instanceTokenContract',instanceTokenContract.approve);
-        // instanceTokenContract.approve();
-        let from;
-        let toAddress =  [this.network.getMPEAddress(this.state.chainId),amountInCogs][0];
-        // Calculate contract compatible value for transfer with proper decimal points using BigNumber
-        const tokenDecimals = web3.toBigNumber(18);
-        const tokenAmountToTransfer = web3.toBigNumber(100);
-        const calculatedTransferValue = web3.toHex(tokenAmountToTransfer.mul(web3.toBigNumber(10).pow(tokenDecimals)));
-        console.log('toAdress',toAddress);
-        console.log('calculated value',calculatedTransferValue);
-        console.log('contract Instance hash',instanceTokenContract.transactionHash)
-        instanceTokenContract.totalSupply.call((err,result)=>{
-          console.log('instanceTokenContract.totalSupply.call',result);
-        });
-        web3.eth.getAccounts((err,accounts)=>{
-          console.log('getAccounts',accounts);
-          from = accounts[0];
-          instanceTokenContract.transfer.sendTransaction(toAddress,calculatedTransferValue,{from},(err,txnHash)=>{
-            if(error){console.log('instanceTokenContract.transfer.sendTransaction error',error)};
-            console.log('instanceTokenContract.transfer.sendTransaction success',txnHash);
-          });
-        });
-
-        // this.executeContractMethod(instanceTokenContract.approve, this.handleDeposit, estimatedGas, gasPrice, "contractMessage",
-        // "",
-        // [this.network.getMPEAddress(this.state.chainId),amountInCogs]);
+        this.executeContractMethod(instanceTokenContract.approve, this.handleDeposit, estimatedGas, gasPrice, "contractMessage",
+        "",
+        [this.network.getMPEAddress(this.state.chainId),amountInCogs]);
       })
     })
   }
