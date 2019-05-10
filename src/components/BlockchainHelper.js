@@ -43,6 +43,23 @@ export default class BlockchainHelper {
         window.ethjs = this.eth; //TODO - NETWORK CHANGE
     }
 
+    async isUserLoggedIn() { 
+        let isLoggedIn = await fm.user.isLoggedIn();
+        return isLoggedIn;
+     };
+
+    login(){
+        console.log('login');
+        fm.user.login().then(() => {
+            web3.eth.getAccounts().then(console.log); // ['0x...']
+          });
+    }
+
+    logout(){
+        console.log('logout');
+        fm.user.logout();
+    }
+
     async waitForTransaction(hash) {
         let receipt;
         while (!receipt) {

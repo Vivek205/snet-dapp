@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {Link} from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { NETWORKS } from '../networks'
-import GetStarted from './GetStarted'
+// import GetStarted from './GetStarted';
+import BlockchainHelper from './BlockchainHelper';
 
 export default class Header extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ export default class Header extends React.Component {
     }
     this.showMenu = this.showMenu.bind(this);    
     library.add(fab, faCheckSquare, faCoffee);
+    this.network = new BlockchainHelper();
   }
 
   showMenu(){
@@ -32,6 +34,10 @@ export default class Header extends React.Component {
                       {(typeof this.props.chainId !== 'undefined' && this.props.chainId !== "1") ?
                         <li><Link to="//faucet.singularitynet.io" target="_blank">AGI Faucet</Link></li>
                        : null} 
+                       {/* {true ?
+                           <li><button onClick={this.network.logout}>logout</button></li>
+                           :
+                           <li><button onClick={this.network.login}>login</button></li>} */}
                     </ul>
 
     const networkName = (typeof NETWORKS[this.props.chainId] !== 'undefined' && typeof NETWORKS[this.props.chainId].name !== 'undefned') ?
@@ -79,9 +85,13 @@ export default class Header extends React.Component {
                     </button>
                     {
                       this.state.showMenu ? 
+                      <Fragment>
                         <div className="header-menu">
                           {menuList}
                         </div>
+                        
+                        
+                        </Fragment>
                       : 
                         null  
                     }                  
